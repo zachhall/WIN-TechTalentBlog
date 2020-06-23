@@ -1,8 +1,23 @@
 package com.win.techtalentblog.BlogPost;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class BlogPost {
+
+    @Id
+
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String title, author, blogEntry;
+
+    public BlogPost() {
+        // non-argument constructor for JPA
+    }
 
     public BlogPost(String title, String author, String blogEntry) {
         this.title = title;
