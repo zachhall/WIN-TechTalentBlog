@@ -11,8 +11,10 @@
   <body>
     <div class="container">
       <div class="row">
-        <h1>Welcome to my Blog Site!</h1>
-        <h3>Check out our blogs!</h3>
+          <div class="col-md">
+            <h1>Welcome to my Blog Site!</h1>
+            <h3>Check out our blogs!</h3>
+          </div>    
       </div>
       <div class="row">
         <div th:each="blog:${posts}">
@@ -27,12 +29,13 @@
             </div><!-- End of .card -->
           </div><!-- End of .col-sm -->
         </div><!-- End of posts loop -->
-
       </div>
       <div class="row">
-        <a href="/blogposts/new">
-            <button class="btn btn-primary">Submit A New Blog Post</button>
-        </a>
+          <div class="col-xl">
+            <a href="/blogposts/new">
+                <button class="btn btn-primary">Submit A New Blog Post</button>
+            </a>
+          </div>
       </div>
     </div>
 
