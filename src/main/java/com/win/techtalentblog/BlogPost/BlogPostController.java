@@ -21,32 +21,36 @@ public class BlogPostController {
     private BlogPost blogPost;
 
     public static void getAllPosts() {
-        Iterable<BlogPost> allPosts = blogPostRepository.findAll();
 
-        int numPosts = 0;
-        for (Object i : allPosts) {
-            numPosts++;
-        }
-
-        if (numPosts > 0) {
-            for (BlogPost post : blogPostRepository.findAll()) {
-                posts.add(post);
-            }
-        } else {
-            FakeBlogInfo fakePosts = FakeBlogInfo.getInstance();
-            for (BlogPost fakePost : fakePosts.allFakeBlogs()) {
-                posts.add(fakePost);
+        FakeBlogInfo fakePosts = FakeBlogInfo.getInstance();
+        for (BlogPost fakePost : fakePosts.allFakeBlogs()) {
+            posts.add(fakePost);
+            for (BlogPost post : posts) {
+                blogPostRepository.save(post);
             }
         }
-    }
 
-    @GetMapping(value = "/")
-    public String index(BlogPost blogPost, Model model) {
+        // Iterable<BlogPost> allPosts = blogPostRepository.findAll();
+
+        // int numPosts = 0;
+        // for (Object i : allPosts) {
+        // numPosts++;
+        // }
+
+        // if (numPosts > 0) {
+        // for (BlogPost post : blogPostRepository.findAll()) {
+        // posts.add(post);
+        // }
+        // } else {
         // FakeBlogInfo fakePosts = FakeBlogInfo.getInstance();
         // for (BlogPost fakePost : fakePosts.allFakeBlogs()) {
         // posts.add(fakePost);
         // }
+        // }
+    }
 
+    @GetMapping(value = "/")
+    public String index(BlogPost blogPost, Model model) {
         // Run getAllPosts() again to make sure our index has all of the posts in the
         // database
         getAllPosts();
