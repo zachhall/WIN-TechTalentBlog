@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,17 +22,18 @@ public class BlogPostController {
 
     FakeBlogInfo fakeData = FakeBlogInfo.getInstance();
     private static List<BlogPost> posts = new ArrayList<>();
+    private BlogPost blogPost;
 
     @GetMapping(value = "/")
     public String index(BlogPost blogPost, Model model) {
+        posts.removeAll(posts);
         for (BlogPost post : blogPostRepository.findAll()) {
             posts.add(post);
         }
+
         model.addAttribute("posts", posts);
         return "blogpost/index";
     }
-
-    private BlogPost blogPost;
 
     @GetMapping(value = "/blogposts/new")
     public String newBlog(BlogPost blogPost) {
@@ -43,11 +45,15 @@ public class BlogPostController {
         Optional<BlogPost> post = blogPostRepository.findById(id);
         if (post.isPresent()) {
             BlogPost actualPost = post.get();
-            model.addAttribute("title", actualPost.getTitle());
-            model.addAttribute("author", actualPost.getAuthor());
-            model.addAttribute("blogEntry", actualPost.getBlogEntry());
+            model.addAttribute("blogPost", actualPost);
         }
         return "blogpost/new";
+    }
+
+    @RequestMapping(value = "blogposts/delete/{id}")
+    public String deletePostById(@PathVariable Long id, BlogPost blogPost) {
+        blogPostRepository.deleteById(id);
+        return "blogpost/delete";
     }
 
     @PostMapping(value = "/blogposts")
@@ -55,7 +61,7 @@ public class BlogPostController {
         blogPostRepository.save(new BlogPost(blogPost.getTitle(), blogPost.getAuthor(), blogPost.getBlogEntry()));
 
         // Add new blog posts as they're created to our posts list for indexing
-        posts.add(blogPost);
+        // posts.add(blogPost);
 
         // Add attributes to our model so we can show them to the user on the results
         // page
