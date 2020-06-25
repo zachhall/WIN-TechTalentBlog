@@ -20,7 +20,6 @@ public class BlogPostController {
     @Autowired
     private BlogPostRepository blogPostRepository;
 
-    FakeBlogInfo fakeData = FakeBlogInfo.getInstance();
     private static List<BlogPost> posts = new ArrayList<>();
     private BlogPost blogPost;
 
