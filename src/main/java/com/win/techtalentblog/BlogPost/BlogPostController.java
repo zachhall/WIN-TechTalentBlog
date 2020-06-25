@@ -15,21 +15,43 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class BlogPostController {
 
     @Autowired
-    private BlogPostRepository blogPostRepository;
+    private static BlogPostRepository blogPostRepository;
 
     private static List<BlogPost> posts = new ArrayList<>();
     private BlogPost blogPost;
 
-    Iterable<BlogPost> allPosts = blogPostRepository.findAll();
+    public static void getAllPosts() {
+        Iterable<BlogPost> allPosts = blogPostRepository.findAll();
 
-    for(
-    BlogPost post:allPosts)
-    {
-        posts.add(post);
+        int numPosts = 0;
+        for (Object i : allPosts) {
+            numPosts++;
+        }
+
+        if (numPosts > 0) {
+            for (BlogPost post : blogPostRepository.findAll()) {
+                posts.add(post);
+            }
+        } else {
+            FakeBlogInfo fakePosts = FakeBlogInfo.getInstance();
+            for (BlogPost fakePost : fakePosts.allFakeBlogs()) {
+                posts.add(fakePost);
+            }
+        }
     }
 
     @GetMapping(value = "/")
     public String index(BlogPost blogPost, Model model) {
+        // FakeBlogInfo fakePosts = FakeBlogInfo.getInstance();
+        // for (BlogPost fakePost : fakePosts.allFakeBlogs()) {
+        // posts.add(fakePost);
+        // }
+
+        // Run getAllPosts() again to make sure our index has all of the posts in the
+        // database
+        getAllPosts();
+        // Put all of the posts we just grabbed into our model for Thymeleaf to deal
+        // with
         model.addAttribute("posts", posts);
         return "blogpost/index";
     }
@@ -60,7 +82,8 @@ public class BlogPostController {
         blogPostRepository.save(new BlogPost(blogPost.getTitle(), blogPost.getAuthor(), blogPost.getBlogEntry()));
 
         // Add new blog posts as they're created to our posts list for indexing
-        posts.add(blogPost);
+        // ** I think is this unneeded now
+        // posts.add(blogPost);
 
         // Add attributes to our model so we can show them to the user on the results
         // page
