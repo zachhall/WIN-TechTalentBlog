@@ -9,9 +9,10 @@ public class FakeBlogInfo {
     private static FakeBlogInfo fakeBlogPosts = null;
 
     public static FakeBlogInfo getInstance() {
-        if (fakeBlogPosts == null) {
-            fakeBlogPosts = new FakeBlogInfo();
-        }
+        // if (fakeBlogPosts == null) {
+        // fakeBlogPosts = new FakeBlogInfo();
+        // }
+        fakeBlogPosts = new FakeBlogInfo();
         return fakeBlogPosts;
     }
 
