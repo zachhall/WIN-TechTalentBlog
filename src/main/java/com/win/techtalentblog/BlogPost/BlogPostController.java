@@ -65,21 +65,21 @@ public class BlogPostController {
         return "blogpost/new";
     }
 
-    @GetMapping(value = "/blogposts/{id}")
-    public String getBlogById(@PathVariable String id, Model model) {
-        long blogId = Long.parseLong(id);
-        Optional<BlogPost> blogPost = blogPostRepository.findById(blogId);
-        if (blogPost.isPresent()) {
-            BlogPost post = blogPost.get();
-            model.addAttribute("title", post.getTitle());
-            model.addAttribute("author", post.getAuthor());
-            model.addAttribute("blogEntry", post.getBlogEntry());
-            return "blogpost/new";
-        } else {
-            throw new NullPointerException();
-        }
+    // @GetMapping(value = "/blogposts/{id}")
+    // public String getBlogById(@PathVariable String id, Model model) {
+    // long blogId = Long.parseLong(id);
+    // Optional<BlogPost> blogPost = blogPostRepository.findById(blogId);
+    // if (blogPost.isPresent()) {
+    // BlogPost post = blogPost.get();
+    // model.addAttribute("title", post.getTitle());
+    // model.addAttribute("author", post.getAuthor());
+    // model.addAttribute("blogEntry", post.getBlogEntry());
+    // return "blogpost/new";
+    // } else {
+    // throw new NullPointerException();
+    // }
 
-    }
+    // }
 
     @PostMapping(value = "/blogposts")
     public String addNewBlogPost(BlogPost blogPost, Model model) {
