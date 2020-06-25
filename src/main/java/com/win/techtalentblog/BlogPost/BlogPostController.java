@@ -47,13 +47,28 @@ public class BlogPostController {
             BlogPost actualPost = post.get();
             model.addAttribute("blogPost", actualPost);
         }
-        return "blogpost/new";
+        return "blogpost/edit";
     }
 
     @RequestMapping(value = "blogposts/delete/{id}")
     public String deletePostById(@PathVariable Long id, BlogPost blogPost) {
         blogPostRepository.deleteById(id);
         return "blogpost/delete";
+    }
+
+    @RequestMapping(value = "/blogposts/update/{id}")
+    public String updateExistingPost(@PathVariable Long id, BlogPost blogPost, Model model) {
+        Optional<BlogPost> post = blogPostRepository.findById(id);
+        if (post.isPresent()) {
+            BlogPost actualPost = post.get();
+            actualPost.setTitle(blogPost.getTitle());
+            actualPost.setAuthor(blogPost.getAuthor());
+            actualPost.setBlogEntry(blogPost.getBlogEntry());
+            blogPostRepository.save(actualPost);
+            model.addAttribute("blogPost", actualPost);
+        }
+
+        return "blogpost/result";
     }
 
     @PostMapping(value = "/blogposts")
@@ -70,4 +85,5 @@ public class BlogPostController {
         model.addAttribute("blogEntry", blogPost.getBlogEntry());
         return "blogpost/result";
     }
+
 }

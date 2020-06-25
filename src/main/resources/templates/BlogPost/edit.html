@@ -13,17 +13,15 @@
 
 			<div class="row">
 				<p>Use the form below to submit a blog post:</p>
-				<form action="#" th:action="@{/blogposts}" th:object="${blogPost}" method="POST">
+				<form action="#" th:action="@{~/blogposts/update/{id}(id=${blogPost.id})}" th:object="${blogPost}" method="POST">
 					<label for="blogTitle">Title:</label>
-					<input type="text" name="blogTitle" th:value="*{title}" th:id="*{title}" />
+					<input type="text" name="blogTitle" th:field="*{title}" />
 
 					<label for="blogAuthor">Author:</label>
-					<input type="text" name="blogAuthor" th:field="*{author}" th:attr="value = *{author}" />
+					<input type="text" name="blogAuthor" th:field="*{author}" />
 
 					<label for="blogEntry">Blog Entry:</label>
-					<input type="text" name="blogEntry" th:field="*{blogEntry}" th:attr="value = *{blogEntry}" />
-
-					<input type="hidden" th:field="*{id}" th:value="*{blogPost.id}" />
+					<input type="text" name="blogEntry" th:field="*{blogEntry}" />
 
 					<button type="submit" class="btn btn-success">Submit Your Blog</button>
 				</form>
