@@ -2,12 +2,16 @@ package com.win.techtalentblog.BlogPost;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class BlogPostController {
@@ -15,10 +19,14 @@ public class BlogPostController {
     @Autowired
     private BlogPostRepository blogPostRepository;
 
+    FakeBlogInfo fakeData = FakeBlogInfo.getInstance();
     private static List<BlogPost> posts = new ArrayList<>();
 
     @GetMapping(value = "/")
     public String index(BlogPost blogPost, Model model) {
+        for (BlogPost post : blogPostRepository.findAll()) {
+            posts.add(post);
+        }
         model.addAttribute("posts", posts);
         return "blogpost/index";
     }
@@ -27,6 +35,18 @@ public class BlogPostController {
 
     @GetMapping(value = "/blogposts/new")
     public String newBlog(BlogPost blogPost) {
+        return "blogpost/new";
+    }
+
+    @RequestMapping(value = "/blogposts/{id}", method = RequestMethod.GET)
+    public String editPostWithId(@PathVariable Long id, BlogPost blogPost, Model model) {
+        Optional<BlogPost> post = blogPostRepository.findById(id);
+        if (post.isPresent()) {
+            BlogPost actualPost = post.get();
+            model.addAttribute("title", actualPost.getTitle());
+            model.addAttribute("author", actualPost.getAuthor());
+            model.addAttribute("blogEntry", actualPost.getBlogEntry());
+        }
         return "blogpost/new";
     }
 
